@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=4 uid="uid://tvlqwsw6ccb1"]
+[gd_scene load_steps=69 format=4 uid="uid://tvlqwsw6ccb1"]
 
 [ext_resource type="Script" uid="uid://cn3qkfqtk8g7n" path="res://script/player.gd" id="1_4jm02"]
 [ext_resource type="Texture2D" uid="uid://begxb4q62pkmk" path="res://assets/sprites/character/player/idle/1.png" id="1_oldxj"]
@@ -45,12 +45,14 @@
 [ext_resource type="Texture2D" uid="uid://wg2qaqb44l6o" path="res://assets/sprites/character/player/run/12.png" id="39_f460h"]
 [ext_resource type="Texture2D" uid="uid://c4o6w75n76bi4" path="res://assets/sprites/character/player/run/13.png" id="40_ycj0v"]
 [ext_resource type="Texture2D" uid="uid://b2sqhc48nl3h6" path="res://assets/sprites/character/player/run/14.png" id="41_ron3d"]
+[ext_resource type="Script" uid="uid://byhseiwyk7y46" path="res://script/bg_manager.gd" id="44_km826"]
 [ext_resource type="Texture2D" uid="uid://blqdu8crkccur" path="res://assets/sprites/background/beach/parallax0.png" id="44_mbros"]
 [ext_resource type="Texture2D" uid="uid://dx0bkwgj8vjbk" path="res://assets/sprites/background/beach/parallax1.png" id="45_ntge4"]
 [ext_resource type="Texture2D" uid="uid://bffvtf4rcs7hq" path="res://assets/sprites/background/beach/parallax2.png" id="46_ie7le"]
 [ext_resource type="Texture2D" uid="uid://slx4v4dkyef8" path="res://assets/sprites/background/grassland/bg_sky.png" id="47_ouh5b"]
 [ext_resource type="Texture2D" uid="uid://dwlgiup3v3cmw" path="res://assets/sprites/background/grassland/bg_cloud.png" id="48_km826"]
 [ext_resource type="Texture2D" uid="uid://gsyqa14ruftf" path="res://assets/sprites/background/grassland/bg_mount.png" id="49_p2s8b"]
+[ext_resource type="Script" uid="uid://cw3rikiv0rf3x" path="res://script/bg_trigger.gd" id="53_p2s8b"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kfelt"]
 animations = [{
@@ -648,6 +650,9 @@ texture = ExtResource("30_rg6nf")
 sources/0 = SubResource("TileSetAtlasSource_76meg")
 sources/1 = SubResource("TileSetAtlasSource_ntge4")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vhvp1"]
+size = Vector2(20, 162)
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="."]
@@ -675,11 +680,12 @@ position_smoothing_enabled = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("WorldBoundaryShape2D_4jm02")
 
-[node name="Background" type="TileMapLayer" parent="."]
+[node name="Background" type="TileMapLayer" parent="." groups=["BackgroundManager"]]
 z_index = -2
 texture_filter = 1
 tile_map_data = PackedByteArray("AAD//wsAAAAIAAAAAAD//wwAAAAIAAEAAAAAAAsAAAAJAAAAAAAAAAwAAAAJAAEAAAAAAA0AAAAJAAIAAAABAAsAAAAKAAAAAAABAAwAAAAKAAEAAAAEAAsAAAAIAAAAAAAEAAwAAAAIAAEAAAAFAAsAAAAJAAAAAAAFAAwAAAAJAAEAAAAFAA0AAAAJAAIAAAAGAAsAAAAKAAAAAAAGAAwAAAAKAAEAAAACAA0AAAAEAAEAAAAEAA0AAAAHAAAAAAAOAA0AAQAFAAEAAAAOAAwAAQAFAAEAAAD0/xMAAAAFAAMAAAD0/xIAAAAFAAMAAAAHABAAAAAFAAMAAAAHAA8AAAAFAAIAAAAHABEAAAAFAAMAAAAHABIAAAAFAAMAAAAMABIAAAAFAAMAAAAMABEAAAAFAAMAAAAMABAAAAAFAAMAAAAMAA8AAAAFAAIAAAAZAA8AAAAFAAIAAAAZABAAAAAFAAMAAAAZABEAAAAFAAMAAAAZABIAAAAFAAMAAAAqABIAAAAFAAMAAAAqABEAAAAFAAMAAAAqABAAAAAFAAMAAAAqAA8AAAAFAAIAAAAuAA8AAQADAAIAAAAzAA8AAQADAAIAAAAxAA8AAQADAAIAAAAwAA8AAQADAAIAAAAuABAAAQADAAMAAAAuABEAAQADAAMAAAAuABIAAQADAAMAAAAzABAAAQADAAMAAAAzABEAAQADAAMAAAAzABIAAQADAAMAAAD0/xEAAAAFAAIAAAA=")
 tile_set = SubResource("TileSet_mbros")
+script = ExtResource("44_km826")
 
 [node name="Beach" type="ParallaxBackground" parent="Background"]
 scroll_limit_end = Vector2(-1, 0)
@@ -730,7 +736,6 @@ position = Vector2(171, 153)
 texture = ExtResource("46_ie7le")
 
 [node name="Grassland" type="ParallaxBackground" parent="Background"]
-visible = false
 scroll_limit_end = Vector2(-1, 0)
 
 [node name="Langit" type="ParallaxLayer" parent="Background/Grassland"]
@@ -788,3 +793,21 @@ z_index = 2
 texture_filter = 1
 tile_map_data = PackedByteArray("AAANAA0AAQAGAAEAAAA=")
 tile_set = SubResource("TileSet_ie7le")
+
+[node name="BGTrigers" type="Node2D" parent="."]
+
+[node name="ToGrassland" type="Area2D" parent="BGTrigers"]
+script = ExtResource("53_p2s8b")
+target_background = "Grassland"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BGTrigers/ToGrassland"]
+position = Vector2(554, 81)
+shape = SubResource("RectangleShape2D_vhvp1")
+
+[node name="ToCave" type="Area2D" parent="BGTrigers"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BGTrigers/ToCave"]
+position = Vector2(2029, 511)
+shape = SubResource("RectangleShape2D_vhvp1")
+
+[connection signal="body_entered" from="BGTrigers/ToGrassland" to="BGTrigers/ToGrassland" method="_on_body_entered"]
