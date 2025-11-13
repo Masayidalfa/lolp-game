@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://bg1euskagcriu"]
+
+[ext_resource type="Script" uid="uid://cri53h0vx7hyl" path="res://script/moving_platform.gd" id="1_0ltmk"]
+[ext_resource type="Texture2D" uid="uid://ctxsyji2el3iu" path="res://assets/sprites/tiles/beach.png" id="2_r32mm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k63f6"]
+size = Vector2(20, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ltmk"]
+size = Vector2(20, 17)
+
+[node name="MovingPlatform" type="Node2D"]
+script = ExtResource("1_0ltmk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -9.536743e-07)
+scale = Vector2(0.44620755, 0.3770454)
+texture = ExtResource("2_r32mm")
+region_enabled = true
+region_rect = Rect2(-0.259, 15.863, 48.113, 44.927)
+
+[node name="CollisionShape2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D"]
+shape = SubResource("RectangleShape2D_k63f6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_0ltmk")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
