@@ -12,5 +12,5 @@ config_version=5
 
 config/name="lolp-game"
 run/main_scene="uid://tvlqwsw6ccb1"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 <<<<<<<HEADrun/main_scene="uid://tvlqwsw6ccb1"
