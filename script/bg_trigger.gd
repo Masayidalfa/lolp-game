@@ -22,11 +22,10 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body.name != "Player" or not player_inside  or bg_manager.is_fading:
+	if body.name != "Player" or not player_inside:
 		return
 
 	player_inside = false
-	
 
 	# Pastikan tidak kembali ke dirinya sendiri
 	if last_background != bg_manager.current_bg_name:
